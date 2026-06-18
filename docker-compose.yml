@@ -67,6 +67,24 @@ services:
       ad.zl.test: 10.5.0.5
       api.zl.test: 10.5.0.5
 
+  php84:
+    container_name: php84
+    build:
+      context: ./php-fpm/conf-8.4
+    ports:
+      - "9003:9000"
+    volumes:
+      - ./php-fpm/conf-8.4/php.ini:/usr/local/etc/php/php.ini
+      - ./php-fpm/conf-8.4/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php-fpm/conf-8.4/php-fpm.d:/usr/local/etc/php-fpm.d
+      - ${WEB_ROOT_PATH}:/var/www
+    networks:
+      app-net:
+        ipv4_address: 10.5.0.20
+    extra_hosts:
+      ad.zl.test: 10.5.0.5
+      api.zl.test: 10.5.0.5
+
   mysql:
     container_name: mysql
     build:
