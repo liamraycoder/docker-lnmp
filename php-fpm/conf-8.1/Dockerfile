@@ -49,7 +49,8 @@ RUN apk --update add \
         libffi-dev \
         openssl-dev \
         libtool\
-        libevent-dev
+        libevent-dev \
+        librdkafka-dev
 
 #docker alpine php iconv 扩展失效 解决
 RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv
@@ -115,16 +116,24 @@ RUN  pecl install memcached-3.2.0 \
          && rm -rf /tmp/pear \
          && docker-php-ext-enable xlswriter
 
+# PECL Extensions rdkafka:
+RUN pecl install rdkafka \
+        && rm -rf /tmp/pear \
+        && docker-php-ext-enable rdkafka
+
  # PECL Extensions xdebug:
 #RUN  pecl install xdebug-3.2.2 \
 #         && rm -rf /tmp/pear \
 #         && docker-php-ext-enable xdebug
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
-    && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.idekey = PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    && echo "xdebug.mode=debug,develop,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.discover_client_host=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.log=/var/log/xdebug.log" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 
 
@@ -168,4 +177,7 @@ WORKDIR /var/www
 
 
 EXPOSE 9000
+EXPOSE 9003
+EXPOSE 8787
+
 CMD ["php-fpm"]

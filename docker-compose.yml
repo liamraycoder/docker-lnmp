@@ -24,19 +24,19 @@ services:
       - ./nginx/log:/var/log/nginx
       - ${WEB_ROOT_PATH}:/var/www
     depends_on:
-      - php-fpm-8.1
+      - php81
       - mysql
       - redis
     networks:
       app-net:
         ipv4_address: 10.5.0.5
 
-  php-fpm-7.4:
-    container_name: php7.4
+  php74:
+    container_name: php74
     build:
       context: ./php-fpm/conf-7.4
     ports:
-      - 9001:9000
+      - 9074:9000
     volumes:
       - ./php-fpm/conf-7.4/php.ini:/usr/local/etc/php/php.ini
       - ./php-fpm/conf-7.4/php-fpm.conf:/usr/local/etc/php-fpm.conf
@@ -49,12 +49,12 @@ services:
       ad.zl.test: 10.5.0.5
       api.zl.test: 10.5.0.5
 
-  php-fpm-8.1:
-    container_name: php8.1
+  php81:
+    container_name: php81
     build:
       context: ./php-fpm/conf-8.1
     ports:
-      - 9002:9000
+      - 9081:9000
     volumes:
       - ./php-fpm/conf-8.1/php.ini:/usr/local/etc/php/php.ini
       - ./php-fpm/conf-8.1/php-fpm.conf:/usr/local/etc/php-fpm.conf
@@ -72,7 +72,7 @@ services:
     build:
       context: ./php-fpm/conf-8.4
     ports:
-      - "9003:9000"
+      - 9084:9000
     volumes:
       - ./php-fpm/conf-8.4/php.ini:/usr/local/etc/php/php.ini
       - ./php-fpm/conf-8.4/php-fpm.conf:/usr/local/etc/php-fpm.conf
