@@ -107,9 +107,9 @@ RUN  pecl install memcached-3.2.0 \
 
 
 # PECL Extensions swoole:
-#RUN  pecl install swoole-5.0.2 \
-#        && rm -rf /tmp/pear \
-#        && docker-php-ext-enable swoole
+RUN  pecl install swoole-5.0.3 \
+        && rm -rf /tmp/pear \
+        && docker-php-ext-enable swoole
 
  # PECL Extensions xlswriter:
  RUN  pecl install xlswriter-1.5.4 \
