@@ -106,11 +106,6 @@ RUN  pecl install memcached-3.2.0 \
        && docker-php-ext-enable memcached
 
 
-# PECL Extensions swoole:
-RUN  pecl install swoole-5.0.3 \
-        && rm -rf /tmp/pear \
-        && docker-php-ext-enable swoole
-
  # PECL Extensions xlswriter:
  RUN  pecl install xlswriter-1.5.4 \
          && rm -rf /tmp/pear \
@@ -165,6 +160,15 @@ RUN curl -sS http://getcomposer.org/installer | php \
     && mv ./composer.phar /usr/local/bin/composer
 #        && mv ./composer.phar /usr/local/bin/composer \
 #        && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer
+
+
+# PECL Extensions swoole:
+#RUN  pecl install swoole-6.1.0 \
+#        && rm -rf /tmp/pear \
+#        && docker-php-ext-enable swoole
+
+RUN pecl install -D 'enable-openssl="yes" enable-http2="yes"' swoole-6.1.0 \
+    && docker-php-ext-enable swoole
 
 RUN apk del build-base \
     	linux-headers \
